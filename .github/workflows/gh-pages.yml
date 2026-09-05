@@ -6,10 +6,9 @@ on:
       - main
   pull_request:
 
+# Least privilege by default; the deploy job widens this for itself.
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 # Allow one concurrent deployment; don't cancel a run already publishing.
 concurrency:
@@ -26,7 +25,7 @@ jobs:
           fetch-depth: 0 # for .GitInfo and .Lastmod
 
       # Installs the Hugo version pinned in mise.toml, so CI and local match.
-      - uses: jdx/mise-action@v4
+      - uses: jdx/mise-action@c2a87611a18de5b3828c5652fe268e992400cb5c # v4.3.0
 
       - name: Build
         run: hugo --gc --minify
@@ -55,6 +54,9 @@ jobs:
     needs: build
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
+    permissions:
+      pages: write # publish to GitHub Pages
+      id-token: write # verify the deployment originates from this workflow
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
