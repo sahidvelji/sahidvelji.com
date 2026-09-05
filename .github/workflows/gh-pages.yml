@@ -3,30 +3,44 @@ name: github pages
 on:
   push:
     branches:
-      - master  # Set a branch to deploy
+      - main
   pull_request:
 
-jobs:
-  deploy:
-    runs-on: ubuntu-20.04
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          submodules: true  # Fetch Hugo themes (true OR recursive)
-          fetch-depth: 0    # Fetch all history for .GitInfo and .Lastmod
+permissions:
+  contents: read
+  pages: write
+  id-token: write
 
-      - name: Setup Hugo
-        uses: peaceiris/actions-hugo@v2
+# Allow one concurrent deployment; don't cancel a run already publishing.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
         with:
-          hugo-version: 'latest'
-          # extended: true
+          submodules: recursive # fetch the PaperMod theme
+          fetch-depth: 0 # for .GitInfo and .Lastmod
+
+      # Installs the Hugo version pinned in mise.toml, so CI and local match.
+      - uses: jdx/mise-action@v4
 
       - name: Build
-        run: hugo --minify
-
-      - name: Deploy
-        uses: peaceiris/actions-gh-pages@v3
-        if: github.ref == 'refs/heads/master'
+        run: hugo --gc --minify
+      - uses: actions/upload-pages-artifact@v5
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./public
+          path: ./public
+
+  deploy:
+    needs: build
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v5
