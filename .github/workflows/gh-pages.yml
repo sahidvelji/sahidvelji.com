@@ -30,6 +30,23 @@ jobs:
 
       - name: Build
         run: hugo --gc --minify
+      - name: Smoke-test the built page
+        run: |
+          fail=0
+          for pattern in \
+            sahid-velji.png \
+            linkedin.com/in/sahidvelji \
+            github.com/sahidvelji \
+            kaggle.com/sahidvelji \
+            x.com/sahidvelji \
+            og:image; do
+            grep -qF -- "$pattern" public/index.html || { echo "missing from index.html: $pattern"; fail=1; }
+          done
+          if grep -qE 'abs url|path_to_repo|opengraph, twitter-cards' public/index.html; then
+            echo "unsubstituted theme placeholder in index.html"; fail=1
+          fi
+          exit $fail
+
       - uses: actions/upload-pages-artifact@v5
         with:
           path: ./public
