@@ -3,9 +3,6 @@ title: Sahid Velji
 theme: PaperMod
 
 enableRobotsTXT: true
-buildDrafts: false
-buildFuture: false
-buildExpired: false
 
 minify:
   disableXML: true
