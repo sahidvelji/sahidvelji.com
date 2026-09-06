@@ -28,24 +28,7 @@ jobs:
       # Installs the Hugo version pinned in mise.toml, so CI and local match.
       - uses: jdx/mise-action@c2a87611a18de5b3828c5652fe268e992400cb5c # v4.3.0
 
-      - name: Build
-        run: hugo --gc --minify
-      - name: Smoke-test the built page
-        run: |
-          fail=0
-          for pattern in \
-            sahid-velji.png \
-            linkedin.com/in/sahidvelji \
-            github.com/sahidvelji \
-            kaggle.com/sahidvelji \
-            x.com/sahidvelji \
-            og:image; do
-            grep -qF -- "$pattern" public/index.html || { echo "missing from index.html: $pattern"; fail=1; }
-          done
-          if grep -qE 'abs url|path_to_repo|opengraph, twitter-cards' public/index.html; then
-            echo "unsubstituted theme placeholder in index.html"; fail=1
-          fi
-          exit $fail
+      - run: mise run smoke # depends on build, so this compiles and checks the output
 
       - uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
         with:

@@ -19,4 +19,4 @@ jobs:
       # zizmor comes from mise.toml, so a local run matches CI exactly.
       - uses: jdx/mise-action@c2a87611a18de5b3828c5652fe268e992400cb5c # v4.3.0
 
-      - run: zizmor .github/workflows/
+      - run: mise run lint
