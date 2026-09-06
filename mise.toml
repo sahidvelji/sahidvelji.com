@@ -1,0 +1,37 @@
+min_version = "2026.8.16"
+
+[tools]
+hugo = "0.165.0"
+zizmor = "1.30.0"
+
+[tasks.build]
+description = "Build the site into public/"
+run = "hugo --gc --minify"
+
+[tasks.dev]
+description = "Serve the site locally with live reload"
+run = "hugo server --buildDrafts"
+
+[tasks.lint]
+description = "Audit the GitHub Actions workflows"
+run = "zizmor .github/workflows/"
+
+[tasks.smoke]
+description = "Assert the built page still renders what it should"
+depends = ["build"]
+run = '''
+fail=0
+for pattern in \
+  sahid-velji.png \
+  linkedin.com/in/sahidvelji \
+  github.com/sahidvelji \
+  kaggle.com/sahidvelji \
+  x.com/sahidvelji \
+  og:image; do
+  grep -qF -- "$pattern" public/index.html || { echo "missing from index.html: $pattern"; fail=1; }
+done
+if grep -qE 'abs url|path_to_repo|opengraph, twitter-cards' public/index.html; then
+  echo "unsubstituted theme placeholder in index.html"; fail=1
+fi
+exit $fail
+'''

@@ -1,0 +1,28 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended",
+    "helpers:pinGitHubActionDigests"
+  ],
+  "minimumReleaseAge": "3 days",
+  "git-submodules": {
+    "enabled": true
+  },
+  "packageRules": [
+    {
+      "description": "The build job compiles the site and smoke-tests the output, which is enough to gate an action or Hugo bump.",
+      "matchManagers": [
+        "github-actions",
+        "mise"
+      ],
+      "automerge": true
+    },
+    {
+      "description": "Review theme bumps by hand. A green build proves the templates compile, not that the page still looks right.",
+      "matchManagers": [
+        "git-submodules"
+      ],
+      "automerge": false
+    }
+  ]
+}
