@@ -7,19 +7,20 @@ GitHub Pages by GitHub Actions.
 
 ## Local development
 
-Tool versions come from `mise.toml`, which is also what CI installs, so a local
-run matches the build exactly.
+Tool versions come from `mise.toml` and are locked to exact artifacts in
+`mise.lock`, which is also what CI installs, so a local run matches the build
+exactly.
 
 ```sh
 mise install
-mise exec -- hugo server   # http://localhost:1313
+mise run dev     # serve on localhost:1313, drafts included
+mise run build   # build into public/
+mise run smoke   # build, then assert the page rendered what it should
+mise run lint    # audit the GitHub Actions workflows with zizmor
 ```
 
-Lint the workflows the same way CI does:
-
-```sh
-mise exec -- zizmor .github/workflows/
-```
+CI runs those same tasks rather than its own copies of the commands, so
+anything that passes locally passes there.
 
 ## Notes
 
