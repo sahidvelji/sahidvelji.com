@@ -1,6 +1,6 @@
 # sahidvelji.com
 
-[www.sahidvelji.com](https://www.sahidvelji.com) — a simple personal web page,
+[sahidvelji.com](https://sahidvelji.com) — a simple personal web page,
 built with [Hugo](https://gohugo.io) and the
 [PaperMod](https://github.com/adityatelange/hugo-PaperMod) theme, deployed to
 GitHub Pages by GitHub Actions.
