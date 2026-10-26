@@ -5,7 +5,6 @@
     "helpers:pinGitHubActionDigests"
   ],
   "minimumReleaseAge": "3 days",
-  "platformAutomerge": false,
   "git-submodules": {
     "enabled": true
   },
