@@ -5,12 +5,13 @@
     "helpers:pinGitHubActionDigests"
   ],
   "minimumReleaseAge": "3 days",
+  "platformAutomerge": false,
   "git-submodules": {
     "enabled": true
   },
   "packageRules": [
     {
-      "description": "The build job compiles the site and smoke-tests the output, which is enough to gate a minor or patch bump. Major updates wait for review.",
+      "description": "The build job smoke-tests the site and the lint job runs every linter, which is enough to gate a minor or patch bump. Major updates wait for review.",
       "matchManagers": [
         "github-actions",
         "mise",
