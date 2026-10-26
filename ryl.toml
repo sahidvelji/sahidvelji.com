@@ -25,7 +25,6 @@ regex = 'uses: \S+@[0-9a-f]{40}\s+#'
 rules = ["line-length"]
 
 [format]
-# One space before an inline comment, as GitHub's docs and Renovate write it.
 comment-spacing = 1
 # Leave quoting as written: gh and lazygit write double quotes.
 quote-style = "preserve"
