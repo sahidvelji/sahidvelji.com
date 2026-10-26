@@ -1,8 +1,5 @@
 min_version = "2026.8.16"
 
-[settings.task]
-output = "interleave"
-
 [tools]
 "aqua:owenlamont/ryl" = "0.26.0"
 betterleaks = "1.9.0"
