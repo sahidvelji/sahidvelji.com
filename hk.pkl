@@ -4,9 +4,8 @@ import "package://github.com/jdx/hk/releases/download/v2.8.1/hk@2.8.1#/Builtins.
 
 exclude =
   List(
-    // The theme is a third-party submodule, and mise writes its own lockfile.
+    // The theme is a third-party submodule.
     "themes/**",
-    "mise.lock",
   )
 
 steps {
