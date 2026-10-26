@@ -1,8 +1,16 @@
 min_version = "2026.8.16"
 
 [tools]
+"aqua:owenlamont/ryl" = "0.26.0"
+betterleaks = "1.9.0"
+biome = "2.6.2"
+hk = { version = "2.8.1", workflow = "release.yml" }
 hugo = "0.168.0"
-zizmor = "1.31.1"
+"packslip:github.com/jdx/jactionlint" = { version = "2.3.0", workflow = "release.yaml" }
+pkl = "0.32.2"
+rumdl = "0.3.0"
+tombi = "1.9.1"
+typos = "1.51.1"
 
 [tasks.build]
 description = "Build the site into public/"
@@ -13,8 +21,12 @@ description = "Serve the site locally with live reload"
 run = "hugo server --buildDrafts"
 
 [tasks.lint]
-description = "Audit the GitHub Actions workflows"
-run = "zizmor .github/workflows/"
+description = "Run every linter in hk.pkl over the whole repo"
+run = "hk check --all"
+
+[tasks.fix]
+description = "Apply every available fix from hk.pkl"
+run = "hk fix --all"
 
 [tasks.smoke]
 description = "Assert the built page still renders what it should"

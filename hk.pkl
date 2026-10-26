@@ -1,0 +1,40 @@
+amends "package://github.com/jdx/hk/releases/download/v2.8.1/hk@2.8.1#/Config.pkl"
+
+import "package://github.com/jdx/hk/releases/download/v2.8.1/hk@2.8.1#/Builtins.pkl"
+
+exclude =
+  List(
+    // The theme is a third-party submodule.
+    "themes/**",
+  )
+
+steps {
+  // Any file
+  ["betterleaks"] = Builtins.betterleaks
+  ["trailing-whitespace"] = (Builtins.trailing_whitespace) {
+    // Two trailing spaces are a Markdown line break; rumdl handles whitespace there.
+    exclude = "**/*.md"
+  }
+  ["newlines"] = Builtins.newlines
+  ["typos"] = Builtins.typos
+
+  // Data and docs
+  ["tombi"] = Builtins.tombi
+  ["tombi-format"] = Builtins.tombi_format
+  ["ryl"] = Builtins.ryl
+  ["ryl-format"] = Builtins.ryl_format
+  ["biome"] = Builtins.biome
+  ["rumdl"] = Builtins.rumdl
+  ["pkl-format"] = Builtins.pkl_format
+
+  // GitHub Actions: correctness and security checks for workflows
+  ["jactionlint"] = Builtins.jactionlint
+}
+
+hooks {
+  ["commit-msg"] {
+    steps {
+      ["conventional-commit"] = Builtins.check_conventional_commit
+    }
+  }
+}

@@ -1,0 +1,36 @@
+name: lint
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+# A new push to a pull request cancels its older runs;
+# each push to main gets its own group, so every commit there is checked.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.sha }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  hk:
+    name: hk check
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      # The linters come from mise.toml, so a local run matches CI exactly.
+      - uses: jdx/mise-action@8418fedb1110381a0d3ba51a7a415d7c1b884550 # v5.2.2
+
+      - run: mise run lint
+        shell: bash
+        # jactionlint's online checks query the GitHub API, so run them here
+        # rather than in the local hooks.
+        env:
+          JACTIONLINT_ONLINE: "1"
+          GITHUB_TOKEN: ${{ github.token }}
