@@ -9,7 +9,7 @@ minify:
   minifyOutput: true
 
 params:
-  env: production  # enables opengraph, twitter-cards and schema
+  env: production # enables opengraph, twitter-cards and schema
   description: "Sahid Velji's personal site"
   author: Sahid Velji
   images: ["sahid-velji.png"]
