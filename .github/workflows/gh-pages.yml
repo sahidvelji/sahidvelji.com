@@ -10,40 +10,54 @@ on:
 permissions:
   contents: read
 
-# Allow one concurrent deployment; don't cancel a run already publishing.
+# A new push to a pull request cancels its older runs;
+# each push to main gets its own group, so every commit there is built.
 concurrency:
-  group: pages
-  cancel-in-progress: false
+  group: >-
+    ${{ github.workflow }}-${{
+    github.event_name == 'pull_request' && github.ref || github.sha }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   build:
+    name: build
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
         with:
-          persist-credentials: false # nothing here needs the token after checkout
-          submodules: recursive # fetch the PaperMod theme
-          fetch-depth: 0 # for .GitInfo and .Lastmod
+          # Nothing here needs the token after checkout.
+          persist-credentials: false
+          submodules: recursive  # fetch the PaperMod theme
+          fetch-depth: 0  # for .GitInfo and .Lastmod
 
       # Installs the Hugo version pinned in mise.toml, so CI and local match.
-      - uses: jdx/mise-action@fc42bcc7ddbf51124c30f95a877a0c5168a3bfde # v5.2.1
+      - uses: jdx/mise-action@fc42bcc7ddbf51124c30f95a877a0c5168a3bfde  # v5.2.1
 
-      - run: mise run smoke # depends on build, so this compiles and checks the output
+      # smoke depends on build, so this compiles and checks the output.
+      - run: mise run smoke
+        shell: bash
 
-      - uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
+      - uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9  # v5.0.0
         with:
           path: ./public
 
   deploy:
+    name: deploy
     needs: build
-    if: github.ref == 'refs/heads/main'
+    if: ${{ github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
+    timeout-minutes: 10
+    # Allow one concurrent deployment; don't cancel a run already publishing.
+    concurrency:
+      group: pages
+      cancel-in-progress: false
     permissions:
-      pages: write # publish to GitHub Pages
-      id-token: write # verify the deployment originates from this workflow
+      pages: write  # publish to GitHub Pages
+      id-token: write  # verify the deployment originates from this workflow
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - id: deployment
-        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1
+        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346  # v5.0.1

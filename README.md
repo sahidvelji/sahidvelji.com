@@ -16,11 +16,18 @@ mise install
 mise run dev     # serve on localhost:1313, drafts included
 mise run build   # build into public/
 mise run smoke   # build, then assert the page rendered what it should
-mise run lint    # audit the GitHub Actions workflows with zizmor
+mise run lint    # run every linter in hk.pkl
+mise run fix     # apply every available fix
 ```
 
 CI runs those same tasks rather than its own copies of the commands, so
 anything that passes locally passes there.
+
+[hk](https://hk.jdx.dev) lints and formats each commit and checks that its
+message is a conventional commit. `hk.pkl` lists the steps; tool settings sit
+beside it (`.editorconfig`, `biome.json`, `ryl.toml`, `tombi.toml`,
+`.github/jactionlint.yaml`). Run `hk install` once to set up the git hooks,
+unless global git hooks already run hk.
 
 ## Notes
 

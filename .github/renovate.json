@@ -1,0 +1,53 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended",
+    "helpers:pinGitHubActionDigests"
+  ],
+  "minimumReleaseAge": "3 days",
+  "git-submodules": {
+    "enabled": true
+  },
+  "packageRules": [
+    {
+      "description": "The build job compiles the site and smoke-tests the output, which is enough to gate a minor or patch bump. Major updates wait for review.",
+      "matchManagers": [
+        "github-actions",
+        "mise",
+        "custom.regex"
+      ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch",
+        "pin",
+        "pinDigest",
+        "digest"
+      ],
+      "automerge": true
+    },
+    {
+      "description": "Review theme bumps by hand. A green build proves the templates compile, not that the page still looks right.",
+      "matchManagers": [
+        "git-submodules"
+      ],
+      "automerge": false
+    }
+  ],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "description": "Bump the hk package URLs in hk.pkl, which Renovate has no manager for. depName matches the mise dep, so both share one branch.",
+      "managerFilePatterns": [
+        "**/hk.pkl"
+      ],
+      "matchStrings": [
+        "github\\.com/jdx/hk/releases/download/v(?<currentValue>[\\d.]+)/hk@[\\d.]+"
+      ],
+      "autoReplaceStringTemplate": "github.com/jdx/hk/releases/download/v{{{newValue}}}/hk@{{{newValue}}}",
+      "depNameTemplate": "hk",
+      "packageNameTemplate": "jdx/hk",
+      "datasourceTemplate": "github-releases",
+      "extractVersionTemplate": "^v(?<version>.+)"
+    }
+  ]
+}
