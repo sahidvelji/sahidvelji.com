@@ -9,7 +9,7 @@ hugo = "0.168.0"
 "packslip:github.com/jdx/jactionlint" = { version = "2.3.0", workflow = "release.yaml" }
 pkl = "0.32.2"
 rumdl = "0.3.0"
-tombi = "1.9.3"
+tombi = "1.9.4"
 typos = "1.51.1"
 
 [tasks.build]
