@@ -1,7 +1,7 @@
 min_version = "2026.8.16"
 
 [tools]
-"aqua:owenlamont/ryl" = "0.26.0"
+"aqua:owenlamont/ryl" = "0.26.1"
 betterleaks = "1.9.0"
 biome = "2.6.2"
 hk = { version = "2.8.1", workflow = "release.yml" }
