@@ -7,7 +7,7 @@ hugo = "0.168.0"
 jactionlint = { version = "2.3.0", workflow = "release.yaml" }
 pkl = "0.32.2"
 rumdl = "0.3.0"
-tombi = "1.9.5"
+tombi = "1.9.6"
 typos = "1.51.1"
 
 [tasks.build]
