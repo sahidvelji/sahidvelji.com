@@ -6,7 +6,7 @@ hk = { version = "2.9.0", workflow = "release.yml" }
 hugo = "0.169.0"
 jactionlint = { version = "2.3.0", workflow = "release.yaml" }
 pkl = "0.32.2"
-rumdl = "v0.3.1"
+rumdl = "v0.3.2"
 tombi = "1.9.7"
 typos = "1.51.1"
 
