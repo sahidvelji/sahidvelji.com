@@ -8,7 +8,7 @@ jactionlint = { version = "v2.5.0", workflow = "release.yaml" }
 pkl = "0.33.0"
 rumdl = "v0.3.2"
 tombi = "1.11.1"
-typos = "1.52.0"
+typos = "1.52.1"
 
 [tasks.build]
 description = "Build the site into public/"
